@@ -5,23 +5,14 @@
   <title>BTC</title>
   <script src="//cdn.staticfile.org/vue/1.0.11/vue.min.js"></script>
   <script src="//cdn.staticfile.org/jquery/2.1.4/jquery.min.js"></script>
-
   <script src="js/echarts.min.js"></script>
   <script src="js/dataTool.min.js"></script>
-
-
   <link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css">
-
-
 </head>
 <body>
 
 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
 <div id="main" style="width: 600px;height:400px;"></div>
-
-nihao
-
-
 <div id="app">
   <ul>
     <li v-for="msg in message" transition="expand">
@@ -39,7 +30,6 @@ nihao
     background-color: #eee;
     overflow: hidden;
   }
-
   .expand-enter, .expand-leave {
     height: 0;
     padding: 0 10px;
@@ -64,7 +54,6 @@ nihao
         vueApp.message.shift();
       }
     };
-
   });
 </script>
 
@@ -78,7 +67,7 @@ nihao
 
     var graph = echarts.dataTool.gexf.parse(xml);
     var categories = [];
-    for (var i = 0; i < 9; i++) {
+    for (var i = 0; i < 18; i++) {
       categories[i] = {
         name: '类目' + i
       };
