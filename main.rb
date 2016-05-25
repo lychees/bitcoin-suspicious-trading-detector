@@ -6,41 +6,6 @@ Bundler.require
 configure {set :server, :puma}
 Faye::WebSocket.load_adapter('puma')
 
-# get '/get' do
-#   ws = Faye::WebSocket.new request.env
-#   ws.on :open do |event|
-#     sockets << ws
-#   end
-#   ws.on :close do |event|
-#     sockets.delete ws
-#   end
-#   ws.rack_response
-# end
-#
-# get '/send' do
-#   ws = Faye::WebSocket.new request.env
-#   ws.on :message do |event|
-#     sockets.each do |s|
-#       s.send(event.data)
-#     end
-#   end
-#   ws.rack_response
-# end
-#
-# get '/tx/:tx' do |tx|
-#   erb :tx, :locals => {:param1 => tx}
-# end
-#
-# get '/' do
-#   erb :index
-# end
-#
-# get '/broadcast' do
-#   erb :broadcast
-# end
-
-###########
-
 # Pages
 
 get '/' do
@@ -79,6 +44,7 @@ end
 # Listen
 Thread.new {
   EM.run {
+    @geo = GeoIP.new('GeoLiteCity.dat')
     ws = Faye::WebSocket::Client.new('wss://ws.blockchain.info/inv')
     ws.on :open do |event|
       ws.send('{"op":"unconfirmed_sub"}')
@@ -86,7 +52,17 @@ Thread.new {
     ws.on :message do |event|
       data = JSON.parse(event.data)
       if data['op'] == 'utx'
-        puts event.data
+        transition_sockets.each do |socket|
+          unless GeoIP.new('GeoLiteCity.dat').country(data['x']['relayed_by']).nil?
+            socket.send(JSON.fast_unparse({
+                                              sender: data['x']['inputs'][0]['prev_out']['addr'],
+                                              receiver: data['x']['out'][0]['addr'],
+                                              value: (data['x']['inputs'].map{
+                                                  |x| x['prev_out']['value']}.reduce(:+)).to_f * (10 ** -8),
+                                              country: GeoIP.new('GeoLiteCity.dat').country(data['x']['relayed_by']).country_name
+                                          }))
+          end
+        end
       end
     end
   }
