@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>BTC</title>
+  <script src="//cdn.staticfile.org/jquery/2.1.4/jquery.min.js"></script>
+</head>
+<body>
+<div id="app">
+  <input type="text" id="info" placeholder="Input info to send">
+  <input type="button" value="Send" id="send">
+</div>
+
+<script>
+  var ws = new WebSocket('ws://' + window.location.host + '/send');
+  var serial = 0;
+  ws.onopen    = function()  {};
+  ws.onclose   = function()  {};
+  ws.onmessage = function(m) {};
+    
+  $("#send").click(function () {
+    ws.send(JSON.stringify({serial: serial,data:$("#info").val()}));
+    serial ++;
+  })
+</script>
+</body>

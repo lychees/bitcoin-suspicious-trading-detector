@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>BTC</title>
+  <script src="//cdn.staticfile.org/vue/1.0.11/vue.min.js"></script>
+  <script src="//cdn.staticfile.org/jquery/2.1.4/jquery.min.js"></script>
+
+  <script src="js/echarts.min.js"></script>
+  <script src="js/dataTool.min.js"></script>
+
+
+  <link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css">
+
+
+</head>
+<body>
+
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main" style="width: 600px;height:400px;"></div>
+
+nihao
+
+
+<div id="app">
+  <ul>
+    <li v-for="msg in message" transition="expand">
+      {{ msg.data }}
+    </li>
+  </ul>
+</div>
+</body>
+
+<style>
+  .expand-transition {
+    transition: all .3s ease;
+    height: 30px;
+    padding: 10px;
+    background-color: #eee;
+    overflow: hidden;
+  }
+
+  .expand-enter, .expand-leave {
+    height: 0;
+    padding: 0 10px;
+    opacity: 0;
+  }
+</style>
+
+<script>
+  $(document).ready(function() {
+    var vueApp = new Vue({
+      el: '#app',
+      data: {
+        message: []
+      }
+    });
+    var ws = new WebSocket('ws://' + window.location.host + '/get');
+    ws.onopen    = function()  {};
+    ws.onclose   = function()  {};
+    ws.onmessage = function(m) {
+      vueApp.message.push(JSON.parse(m.data));
+      if (vueApp.message.length > 10){
+        vueApp.message.shift();
+      }
+    };
+
+  });
+</script>
+
+<script type="text/javascript">
+  // 基于准备好的dom，初始化echarts实例
+  var myChart = echarts.init(document.getElementById('main'));
+
+  myChart.showLoading();
+  $.get('cluster.gexf', function (xml) {
+    myChart.hideLoading();
+
+    var graph = echarts.dataTool.gexf.parse(xml);
+    var categories = [];
+    for (var i = 0; i < 9; i++) {
+      categories[i] = {
+        name: '类目' + i
+      };
+    }
+    graph.nodes.forEach(function (node) {
+      node.itemStyle = null;
+      node.symbolSize = 10;
+      node.value = node.symbolSize;
+      node.category = node.attributes.modularity_class;
+      // Use random x, y
+      node.x = node.y = null;
+      node.draggable = true;
+    });
+    option = {
+      title: {
+        text: 'Les Miserables',
+        subtext: 'Default layout',
+        top: 'bottom',
+        left: 'right'
+      },
+      tooltip: {},
+      legend: [{
+        // selectedMode: 'single',
+        data: categories.map(function (a) {
+          return a.name;
+        })
+      }],
+      animation: false,
+      series : [
+        {
+          name: 'Les Miserables',
+          type: 'graph',
+          layout: 'force',
+          data: graph.nodes,
+          links: graph.links,
+          categories: categories,
+          roam: true,
+          label: {
+            normal: {
+              position: 'right'
+            }
+          },
+          force: {
+            repulsion: 100
+          }
+        }
+      ]
+    };
+
+    myChart.setOption(option);
+  }, 'xml');
+
+</script>
+
+
+
+</html>
