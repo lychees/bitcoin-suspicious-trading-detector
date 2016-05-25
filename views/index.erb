@@ -81,7 +81,7 @@
     ws.onclose   = function()  {};
     ws.onmessage = function(m) {
       vueApp.message.push(JSON.parse(m.data));
-      if (vueApp.message.length > 10){
+      if (vueApp.message.length > 12){
         vueApp.message.shift();
       }
       var data = JSON.parse(m.data);
