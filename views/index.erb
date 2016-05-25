@@ -39,7 +39,7 @@
       <div class="row" v-for="msg in message" transition="expand" track-by="$index" style="text-align: center">
         <div class="col-md-3" style="overflow: hidden;">{{msg.sender}}</div>
         <div class="col-md-3" style="overflow: hidden;">{{msg.receiver}}</div>
-        <div class="col-md-3" style="overflow: hidden;"><i class="fa fa-btc"></i> {{msg.value}}</div>
+        <div class="col-md-3" style="overflow: hidden;"><i class="fa fa-btc"></i> {{msg.value.toFixed(6)}}</div>
         <div class="col-md-2">{{msg.country}}</div>
       </div>
     </div>
