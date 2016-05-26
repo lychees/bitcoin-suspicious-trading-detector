@@ -8,6 +8,39 @@ Faye::WebSocket.load_adapter('puma')
 
 # Pages
 
+
+get '/' do
+  erb :index
+end
+
+get '/largest_recent_transcations' do
+  erb :largest_recent_transcations
+end
+
+get '/most_popular_addresses' do
+  erb :most_popular_addresses
+end
+
+get '/most_count_addresses' do
+  erb :most_count_addresses
+end
+
+get '/most_frequency_addresses' do
+  erb :most_frequency_addresses
+end
+
+
+
+get '/looping' do
+  erb :looping
+end
+
+
+get '/graph' do
+  erb :graph
+end
+
+
 get '/' do
   erb :index
 end
@@ -23,6 +56,8 @@ end
 get '/user/:id' do |id|
   erb :user, locals: {:id => id}
 end
+
+
 
 # APIs
 

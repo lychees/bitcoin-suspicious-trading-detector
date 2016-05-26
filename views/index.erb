@@ -8,6 +8,9 @@
   <script src="js/echarts.min.js"></script>
   <script src="js/dataTool.min.js"></script>
   <script src="js/world.min.js"></script>
+
+  <link rel="stylesheet" href="css/style.css">
+
   <link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css">
   <!-- 新 Bootstrap 核心 CSS 文件 -->
   <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -23,13 +26,33 @@
 
 </head>
 <body>
-<div style="text-align: center;width: 1200px;height:600px;margin-left: auto;margin-right: auto;">
-  <div id="map" style="width: 1200px;height:600px;"></div>
+
+<header class="navbar navbar-static-top bs-docs-nav" id="top" role="banner">
+  <div class="container"> <div class="navbar-header">
+    <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span> <span class="icon-bar"></span>
+      <span class="icon-bar"></span> </button>
+    <a href="../" class="navbar-brand">
+      Bitcoin Suspicious Tranding Detector
+    </a>
+  </div> <nav id="bs-navbar" class="collapse navbar-collapse"> <ul class="nav navbar-nav">
+    <li> <a href="/">Home</a> </li>
+    <li> <a href="/graph">User Clusting</a> </li>
+    <li class="active"> <a href="../components/">Address</a> </li>
+    <li> <a href="../javascript/">Transaction</a> </li>
+    <li> <a href="../customize/">Spotlight</a> </li> </ul>
+    <ul class="nav navbar-nav navbar-right"><li><a href="http://expo.getbootstrap.com" onclick="ga(&quot;send&quot;,&quot;event&quot;,&quot;Navbar&quot;,&quot;Community links&quot;,&quot;Expo&quot;)">Info</a></li> <li><a href="http://blog.getbootstrap.com" onclick="ga(&quot;send&quot;,&quot;event&quot;,&quot;Navbar&quot;,&quot;Community links&quot;,&quot;Blog&quot;)">About</a></li> </ul> </nav> </div>
+</header>
+
+
+<div style="text-align: center;width: 1200px;height:500px;margin-left: auto;margin-right: auto;">
+  <div id="map" style="width: 1200px;height:500px;"></div>
 </div>
 
 <div id="app">
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-6" id = "box">
       <div class="row" style="text-align: center">
         <div class="col-md-3">发送钱包</div>
         <div class="col-md-3">接受钱包</div>
@@ -44,11 +67,51 @@
       </div>
     </div>
     <div class="col-md-4">
-      <div style="width: 500px;height:400px;margin-left: auto;margin-right: auto;">
-        <div id="main" style="width: 500px;height:400px;"></div>
+      <div style="width: 500px;height:350px;margin-left: auto;margin-right: auto;">
+        <div id="main" style="width: 500px;height:350px;"></div>
       </div>
     </div>
   </div>
+
+  <div>
+
+
+    <div class="bs-example" data-example-id="simple-list-group">
+      <h2 id="list-group-badges">
+        <a class="anchorjs-link " href="#list-group-badges" aria-label="Anchor link for: list group badges" data-anchorjs-icon="" style="font-family: anchorjs-icons; font-style: normal; font-variant: normal; font-weight: normal; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>
+        Spotlight
+      </h2>
+
+      <ul class="list-group">
+        <li class="list-group-item">
+          <a href="/largest_recent_transcations">Largest Recent Transcations</a>
+        </li>
+        <li class="list-group-item">
+          <a href="/most_count_addresses">Most Count Addresses</a>
+        </li>
+        <li class="list-group-item">
+          <a href="/most_popular_addresses">Most Popular Addresses</a>
+        </li>
+
+        <li class="list-group-item">
+          <a href="/most_frequency_addresses">Most Frequency Addresses</a>
+        </li>
+
+
+
+        <li class="list-group-item">
+          <a href="">Transient High Frequency Trading Activities</a>
+        </li>
+        <li class="list-group-item">
+          <a href="/looping">Looping</a>
+        </li>
+        <li class="list-group-item">
+          <a href="">Isolated Address</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
 
 </div>
 </body>
@@ -81,7 +144,7 @@
     ws.onclose   = function()  {};
     ws.onmessage = function(m) {
       vueApp.message.push(JSON.parse(m.data));
-      if (vueApp.message.length > 12){
+      if (vueApp.message.length > 6){
         vueApp.message.shift();
       }
       var data = JSON.parse(m.data);
@@ -102,69 +165,6 @@
 </script>
 
 <script type="text/javascript">
-  // 基于准备好的dom，初始化echarts实例
-  var myChart = echarts.init(document.getElementById('main'));
-
-  myChart.showLoading();
-  $.get('cluster.gexf', function (xml) {
-    myChart.hideLoading();
-
-    var graph = echarts.dataTool.gexf.parse(xml);
-    var categories = [];
-    for (var i = 0; i < 18; i++) {
-      categories[i] = {
-        name: '类目' + i
-      };
-    }
-    graph.nodes.forEach(function (node) {
-      node.itemStyle = null;
-      node.symbolSize = 10;
-      node.value = node.symbolSize;
-      node.category = node.attributes.modularity_class;
-      // Use random x, y
-      node.x = node.y = null;
-      node.draggable = true;
-    });
-    option = {
-      title: {
-        text: 'Les Miserables',
-        subtext: 'Default layout',
-        top: 'bottom',
-        left: 'right'
-      },
-      tooltip: {},
-      legend: [{
-        // selectedMode: 'single',
-        data: categories.map(function (a) {
-          return a.name;
-        })
-      }],
-      animation: false,
-      series : [
-        {
-          name: 'Les Miserables',
-          type: 'graph',
-          layout: 'force',
-          data: graph.nodes,
-          links: graph.links,
-          categories: categories,
-          roam: true,
-          label: {
-            normal: {
-              position: 'right'
-            }
-          },
-          force: {
-            repulsion: 100
-          }
-        }
-      ]
-    };
-
-    myChart.setOption(option);
-  }, 'xml');
-
-
   var myChart2 = echarts.init(document.getElementById('map'));
 
 
@@ -392,7 +392,4 @@
 
 
 </script>
-
-
-
 </html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>BTC</title>
+  <script src="//cdn.staticfile.org/vue/1.0.11/vue.min.js"></script>
+  <script src="//cdn.staticfile.org/jquery/2.1.4/jquery.min.js"></script>
+  <script src="js/echarts.min.js"></script>
+  <script src="js/dataTool.min.js"></script>
+  <script src="js/world.min.js"></script>
+  <link rel="stylesheet" href="//cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css">
+  <!-- 新 Bootstrap 核心 CSS 文件 -->
+  <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+  <!-- 可选的Bootstrap主题文件（一般不用引入） -->
+  <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+  <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+  <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+  <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+  <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+<div class="row-fluid">
+  <div class="span12">
+    <table class="table table-striped" id="blocks">
+      <tbody><tr>
+        <th>HTranscations</th>
+        <th>Age</th>
+        <th class="hidden-phone">Transactions</th>
+        <th class="hidden-phone">Total Sent</th>
+        <th class="hidden-phone">Size (kB)</th>
+      </tr><tr id="bi-1111738"><td><div style="display: block;"><a href="/block/000000000000000000d7ccd2d694a5583ff4b28e781c815d0dd4e9ef01419335">413443</a></div></td><td data-time="1464225080">16 minutes</td><td class="hidden-phone"><div style="display: block;">706</div></td><td class="hidden-phone"><div style="display: block;"><span data-c="3639820794009">36,398.20794009 BTC</span></div></td><td><div style="display: block;"><a href="https://www.antpool.com/">AntPool</a></div></td><td class="hidden-phone"><div style="display: block;">466</div></td></tr><tr id="bi-1111737"><td><div style="display: block;"><a href="/block/000000000000000003597b5e4c4dc73fc0720bfb56b932db91535746d69eb5e3">413442</a></div></td><td data-time="1464224879">20 minutes</td><td class="hidden-phone"><div style="display: block;">1711</div></td><td class="hidden-phone"><div style="display: block;"><span data-c="2335389143926">23,353.89143926 BTC</span></div></td><td><div style="display: block;"><a href="https://bw.com/">BW.COM</a></div></td><td class="hidden-phone"><div style="display: block;">784</div></td></tr>
+      <tr id="bi-1111736">
+        <td><a href="/block/000000000000000000d9e8520f206357032cd7d0f313f5cbe62c911eac7a38ef">413441</a>
+        </td>
+        <td data-time="1464224147">32 minutes</td>
+        <td class="hidden-phone">513</td>
+        <td class="hidden-phone"><span data-c="311502792797">3,115.03 BTC</span>
+        </td>
+        <td>
+          <a href="/blocks/F2Pool">F2Pool</a>
+        </td>
+        <td class="hidden-phone">182.75</td>
+      </tr>
+      <tr id="bi-1111735">
+        <td><a href="/block/000000000000000001179fa78b2799dd2e978fd2037c0d0d09ff4db84d5a4ab4">413440</a>
+        </td>
+        <td data-time="1464223906">36 minutes</td>
+        <td class="hidden-phone">1257</td>
+        <td class="hidden-phone"><span data-c="1024607456775">10,246.07 BTC</span>
+        </td>
+        <td>
+          <a href="/blocks/F2Pool">F2Pool</a>
+        </td>
+        <td class="hidden-phone">476.46</td>
+      </tr>
+
+      <tr id="bi-1111734">
+        <td><a href="/block/000000000000000004046bef6177020cffade1d7086509306da4c573c49ba8a5">413439</a>
+        </td>
+        <td data-time="1464223441">44 minutes</td>
+        <td class="hidden-phone">689</td>
+        <td class="hidden-phone"><span data-c="239512970575">2,395.13 BTC</span>
+        </td>
+        <td>
+
+
+          <a href="/blocks/BitClub Network">BitClub Network</a>
+
+
+
+
+        </td>
+        <td class="hidden-phone">998.04</td>
+      </tr>
+
+      <tr id="bi-1111733">
+        <td><a href="/block/0000000000000000023d989ffcb0599669243ae55f268d72524cd05d13d2c6e4">413438</a>
+        </td>
+        <td data-time="1464223276">46 minutes</td>
+        <td class="hidden-phone">689</td>
+        <td class="hidden-phone"><span data-c="801961419494">8,019.61 BTC</span>
+        </td>
+        <td>
+          <a href="/blocks/F2Pool">F2Pool</a>
+        </td>
+        <td class="hidden-phone">345.07</td>
+      </tr>
+      </tbody></table>
+  </div>
+</div>
+</body>
+
+<style>
+  .expand-transition {
+    transition: all .3s ease;
+    height: 30px;
+    padding: 10px;
+    background-color: #eee;
+    overflow: hidden;
+  }
+  .expand-enter, .expand-leave {
+    height: 0;
+    padding: 0 10px;
+    opacity: 0;
+  }
+</style>
+
+</html>
