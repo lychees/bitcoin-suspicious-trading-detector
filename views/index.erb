@@ -24,10 +24,26 @@
   <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
   <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
+  <style>
+    body{
+      background-color: #121212;
+      color: whitesmoke;
+    }
+      a{
+        color: whitesmoke;
+      }
+      a:hover {
+        color: whitesmoke;
+      }
+      a:visiter {
+        color: whitesmoke;
+      }
+  </style>
+
 </head>
 <body>
 
-<header class="navbar navbar-static-top bs-docs-nav" id="top" role="banner">
+<header class="navbar navbar-static-top bs-docs-nav" id="top" role="banner" >
   <div class="container"> <div class="navbar-header">
     <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
       <span class="sr-only">Toggle navigation</span>
@@ -41,41 +57,46 @@
     <li> <a href="/graph">User Clusting</a> </li>
     <li class="active"> <a href="../components/">Address</a> </li>
     <li> <a href="../javascript/">Transaction</a> </li>
-    <li> <a href="../customize/">Spotlight</a> </li> </ul>
-    <ul class="nav navbar-nav navbar-right"><li><a href="http://expo.getbootstrap.com" onclick="ga(&quot;send&quot;,&quot;event&quot;,&quot;Navbar&quot;,&quot;Community links&quot;,&quot;Expo&quot;)">Info</a></li> <li><a href="http://blog.getbootstrap.com" onclick="ga(&quot;send&quot;,&quot;event&quot;,&quot;Navbar&quot;,&quot;Community links&quot;,&quot;Blog&quot;)">About</a></li> </ul> </nav> </div>
-</header>
+    <li> <a href="../customize/">Spotlight</a> </li>
+  </ul>
+    </nav>
+    </div>
+   </header>
 
 
-<div style="text-align: center;width: 1200px;height:500px;margin-left: auto;margin-right: auto;">
-  <div id="map" style="width: 1200px;height:500px;"></div>
+<div style="text-align: center;width: 1200px;height:700px;margin-left: auto;margin-right: auto;position:absolute;">
+  <div id="map" style="width: 1200px;height:700px;"></div>
 </div>
 
 <div id="app">
-  <div class="row">
-    <div class="col-md-6" id = "box">
-      <div class="row" style="text-align: center">
-        <div class="col-md-3">发送钱包</div>
-        <div class="col-md-3">接受钱包</div>
-        <div class="col-md-3">数额</div>
-        <div class="col-md-2">国家</div>
+  <div class="row" id = "box">
+    <div class="col-md-8" >
+      <div class="row" style="color: white;background-color: #0e6b6a;height: 50px;">
+        <div style="margin-left: 10px; margin-top: 15px; font-size: 20px"> 最新交易 </div>
       </div>
       <div class="row" v-for="msg in message" transition="expand" track-by="$index" style="text-align: center">
-        <div class="col-md-3" style="overflow: hidden;">{{msg.sender}}</div>
-        <div class="col-md-3" style="overflow: hidden;">{{msg.receiver}}</div>
+        <div class="col-md-3" style="overflow: hidden;"><a href="https://blockchain.info/search?search={{msg.sender}}">{{msg.sender}}</a></div>
+        <div class="col-md-3" style="overflow: hidden;"><a href="https://blockchain.info/search?search={{msg.receiver}}">{{msg.receiver}}</a></div>
         <div class="col-md-3" style="overflow: hidden;"><i class="fa fa-btc"></i> {{msg.value.toFixed(6)}}</div>
         <div class="col-md-2">{{msg.country}}</div>
       </div>
     </div>
-    <div class="col-md-4">
-      <div style="width: 500px;height:350px;margin-left: auto;margin-right: auto;">
-        <div id="main" style="width: 500px;height:350px;"></div>
+    <div class="col-md-4" style="background-color: #323232;height:230px">
+      <div class="row" style="color: white;height: 50px;">
+        <div style="margin-left: 10px; margin-top: 15px; font-size: 20px"> 搜索 </div>
       </div>
+      <div style="color:#ccc;"> 你可以输入钱包地址/IP/交易编号对交易进行搜索 </div>
+      <div style="height: 10px;"></div>
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="" style="width: 75%" id="search">
+        <button type="button" class="btn" style="width: 25%; background-color: #0e6b6a; color: white" onclick="top.location='https://blockchain.info/search?search=' +  $('#search').val();">搜索</button>
+      </div>
+
     </div>
   </div>
+</div>
 
-  <div>
-
-
+<!--
     <div class="bs-example" data-example-id="simple-list-group">
       <h2 id="list-group-badges">
         <a class="anchorjs-link " href="#list-group-badges" aria-label="Anchor link for: list group badges" data-anchorjs-icon="" style="font-family: anchorjs-icons; font-style: normal; font-variant: normal; font-weight: normal; position: absolute; margin-left: -1em; padding-right: 0.5em;"></a>
@@ -113,7 +134,9 @@
   </div>
 
 
-</div>
+
+-->
+
 </body>
 
 <style>
@@ -121,12 +144,14 @@
     transition: all .3s ease;
     height: 30px;
     padding: 10px;
-    background-color: #eee;
+    background-color: #333333;
+    color: #ddd;
     overflow: hidden;
   }
   .expand-enter, .expand-leave {
     height: 0;
     padding: 0 10px;
+    color: #ddd;
     opacity: 0;
   }
 </style>
@@ -149,6 +174,9 @@
       }
       var data = JSON.parse(m.data);
       for (var i = 0; i < option_map.series[0].data.length; i++){
+        if (data.country == 'United States'){
+          data.country = 'United States of America'
+        }
         if (option_map.series[0].data[i].name == data.country){
           if (option_map.series[0].data[i].value < 5){
             option_map.series[0].data[i].value += 1.0;
@@ -183,7 +211,7 @@
       }
     },
     toolbox: {
-      show: true,
+      show: false,
       orient: 'vertical',
       left: 'right',
       top: 'center',
@@ -193,17 +221,16 @@
     visualMap: {
       min: 0,
       max: 3,
-      realtime: false,
-      calculable: true,
-      color: ['orangered','yellow','black']
+      realtime: true,
+      calculable: false,
+      color: ['#74102f','#72450c','#121212']
     },
     series: [
       {
         type: 'map',
         mapType: 'world',
-        roam: true,
         itemStyle:{
-          emphasis:{label:{show:true}}
+          emphasis:{label:{show:false}}
         },
         data:[
           {name: 'Afghanistan', value: 0.0},

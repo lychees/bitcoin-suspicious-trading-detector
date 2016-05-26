@@ -1,10 +1,7 @@
 #box {
-    filter:alpha(opacity=90);-moz-opacity:0.9;opacity:0.9; -khtml-opacity: 0.9;
-    position: fixed;
+    filter:alpha(opacity=40);-moz-opacity:0.4;opacity:0.4; -khtml-opacity: 0.4;
+    position: absolute;
     bottom: 0%;
-    right: 0%;
-    width: 60%;
-    height: 30%;
+    left: 5%;
     z-index: 100;
-    pointer-events: none;
 }
